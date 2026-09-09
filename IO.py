@@ -39,5 +39,8 @@ def note_show(note: Note):
     print(f"Creation Date: {note.creation_date}")
     print(f"Last Modified Date: {note.last_modified_date}")
 
+def show_message(message: str) -> None:
+    print(message)
+
 def error(message: str | None = None) -> None:
     print("error: " + message if message else "Uknown error")

@@ -23,11 +23,11 @@ class NoteManager:
         self.notes = IO.load_notes()
 
     def pars_input(self , user_input : str) -> None:
-        if user_input == add_note_command: self.handle_add_note()
+        if user_input == add_note_command: self.handle_create_note()
         elif user_input == list_notes_command: self.handle_list_note()
         else : IO.error()
 
-    def handle_add_note(self) -> None:
+    def handle_create_note(self) -> None:
         values = {}
 
         for parameter in note_parameters:
