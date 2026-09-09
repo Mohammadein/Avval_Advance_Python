@@ -41,6 +41,8 @@ class NoteManager:
             last_modified_date= self.today()
         )
 
+        IO.show_message("note created with ID: " + str(note.id))
+
     def handle_list_note(self) -> None:
         IO.note_list_show(self.notes)
         
