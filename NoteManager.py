@@ -11,6 +11,7 @@ create_note_command = "create note"
 list_notes_command = "list notes"
 read_note_by_id_command = "read note"
 update_note_by_id_command = "update note"
+delete_note_by_id_command = "delete note"
 note_parameters = {
     "title": input_type.one_line,
     "content": input_type.multi_line
@@ -37,6 +38,7 @@ class NoteManager:
         elif list_notes_command in user_input: self.handle_list_note(user_input)
         elif read_note_by_id_command in user_input: self.handle_show_note(user_input)
         elif update_note_by_id_command in user_input: self.handle_update_note(user_input)
+        elif delete_note_by_id_command in user_input: self.handle_delete_note(user_input)
         else : IO.error("command note found")
 
     # handlers
@@ -79,6 +81,17 @@ class NoteManager:
         else:
             IO.error("invalid input")
 
+    def handle_delete_note(self, user_input: str) -> None:
+        note_id = self.extract_note_id(user_input, 2)
+        note = self.find_note_by_id(note_id)
+
+        if note is None:
+            IO.error("note not found")
+            return None
+        
+        self.delete_note(note)
+        IO.show_message("note deleted with ID: " + str(note.id))
+
     # main functions
     def add_note(self, id: int, title: str, content: str,
                     creation_date: str, last_modified_date: str) -> Note:
@@ -95,7 +108,7 @@ class NoteManager:
         return note
     
     def list_notes(self) -> list[Note]:
-        notes_list = list(self.notes.values())
+        notes_list = self.get_notes_list()
 
         IO.note_list_show(notes_list)
         return notes_list
@@ -119,8 +132,14 @@ class NoteManager:
         setattr(note, parameter, i)
         note.last_modified_date = self.today()
         self.notes[note_id] = note
+        IO.save_all_notes(self.get_notes_list())
         return note
 
+    def delete_note(self, note: Note):
+        self.notes.pop(note.id)
+        IO.save_all_notes(self.get_notes_list())
+
+        
     # helper functions
     def today(self) -> str:
         return date.today().isoformat()
@@ -142,4 +161,7 @@ class NoteManager:
         return ", ".join(parameters)
 
     def find_note_by_id(self, id: int) -> Note | None:
-        return self.notes.get(id)       
+        return self.notes.get(id)      
+
+    def get_notes_list(self) -> list[Note]:
+        return list(self.notes.values())

@@ -38,6 +38,12 @@ def write_note(note: Note):
         json.dump(note.__dict__, f)
         f.write("\n")
 
+def save_all_notes(notes: list[Note]):
+    with open("notes.json", "w") as f:
+        for note in notes:
+            json.dump(note.__dict__, f)
+            f.write("\n")
+
 def note_list_show(notes: list[Note]):
     for note in notes:
         print(f"{note.id}: {note.title}")
