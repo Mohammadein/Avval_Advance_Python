@@ -70,13 +70,14 @@ class NoteManager:
 
     def handle_update_note(self, user_input: str) -> None:
         note_id = self.extract_note_id(user_input, 2)
-        if self.show_note_by_id(note_id) is None:
+        note = self.show_note_by_id(note_id)
+        if note is None:
             return
 
         i = IO.read_input("which one do you want to change? " + self.note_parameters_str())
         for parameter in note_parameters:
             if i == parameter:
-                self.update_note_by_id(note_id, parameter)
+                self.update_note(note, parameter)
                 break
         else:
             IO.error("invalid input")
@@ -122,16 +123,11 @@ class NoteManager:
         IO.note_show(note)
         return note
 
-    def update_note_by_id(self, note_id: int, parameter: str) -> Note | None:
-        note = self.find_note_by_id(note_id)
-        if note is None:
-            IO.error("note not found")
-            return None
-
+    def update_note(self, note: Note, parameter: str) -> Note | None:
         i = IO.read_input("enter new " + parameter)
         setattr(note, parameter, i)
         note.last_modified_date = self.today()
-        self.notes[note_id] = note
+        self.notes[note.id] = note
         IO.save_all_notes(self.get_notes_list())
         return note
 
