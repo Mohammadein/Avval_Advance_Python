@@ -30,13 +30,13 @@ class NoteManager:
         self.notes = IO.load_notes()
 
     def pars_input(self , user_input : str) -> None:
-        if user_input == create_note_command: self.handle_create_note()
-        elif user_input == list_notes_command: self.handle_list_note()
-        elif user_input == read_note_by_id_command: self.handle_show_note(user_input)
-        else : IO.error()
+        if create_note_command in user_input: self.handle_create_note(user_input)
+        elif list_notes_command in user_input: self.handle_list_note(user_input)
+        elif read_note_by_id_command in user_input: self.handle_show_note(user_input)
+        else : IO.error("command note found")
 
     # handlers
-    def handle_create_note(self) -> None:
+    def handle_create_note(self, user_input: str) -> None:
         values = {}
 
         for parameter in note_parameters:
@@ -55,7 +55,7 @@ class NoteManager:
 
         IO.show_message("note created with ID: " + str(note.id))
 
-    def handle_list_note(self) -> None:
+    def handle_list_note(self, user_input: str) -> None:
         IO.note_list_show(self.notes)
 
     def handle_show_note(self, user_input: str) -> None:
