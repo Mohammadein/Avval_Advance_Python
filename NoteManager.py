@@ -7,7 +7,6 @@ class input_type(Enum):
     one_line = 0
     multi_line = 1
 
-add_note_command = "add note"
 create_note_command = "create note"
 list_notes_command = "list notes"
 read_note_by_id_command = "read note"
@@ -31,10 +30,12 @@ class NoteManager:
         self.notes = IO.load_notes()
 
     def pars_input(self , user_input : str) -> None:
-        if user_input == add_note_command: self.handle_create_note()
+        if user_input == create_note_command: self.handle_create_note()
         elif user_input == list_notes_command: self.handle_list_note()
+        elif user_input == read_note_by_id_command: self.handle_show_note(user_input)
         else : IO.error()
 
+    # handlers
     def handle_create_note(self) -> None:
         values = {}
 
@@ -56,7 +57,21 @@ class NoteManager:
 
     def handle_list_note(self) -> None:
         IO.note_list_show(self.notes)
-        
+
+    def handle_show_note(self, user_input: str) -> None:
+        word_list = user_input.split()
+        note_id : int
+
+        try:
+            note_id = int(word_list[2])
+        except:
+            IO.error("incorrect input")
+
+        note = self.find_note_by_id(note_id)
+        IO.note_show(note) if note else IO.error("note wasn't found")
+
+
+    # main functions
     def add_note(self, id: int, title: str, content: str,
                     creation_date: str, last_modified_date: str) -> Note:
 
@@ -80,5 +95,9 @@ class NoteManager:
         return self.notes[id]
 
 
+    # helper functions
     def today(self) -> str:
         return date.today().isoformat()
+
+    def find_note_by_id(self, id: int) -> Note | None:
+        return next((note for note in self.notes if note.id == id), None)
