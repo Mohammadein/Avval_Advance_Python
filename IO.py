@@ -22,6 +22,16 @@ def read_input(message: str | None = None) -> str:
     i : str = input((message + ": ") if message else "")
     return i
 
+def read_multiline_input(message: str | None = None) -> str:
+    print(message if message else "")
+    lines: list[str] = []
+    while True:
+        try:
+            lines.append(input())
+        except EOFError:
+            break
+    return "\n".join(lines)
+
 # output
 def write_note(note: Note):
     with open("notes.json", "a") as f:
