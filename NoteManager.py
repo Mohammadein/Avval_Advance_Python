@@ -85,13 +85,13 @@ class NoteManager:
     def handle_delete_note(self, user_input: str) -> None:
         note_id = self.extract_note_id(user_input, 2)
         note = self.find_note_by_id(note_id)
-
         if note is None:
             IO.error("note not found")
             return None
-        
-        self.delete_note(note)
-        IO.show_message("note deleted with ID: " + str(note.id))
+
+        if (self.last_check()):
+            self.delete_note(note)
+            IO.show_message("note deleted with ID: " + str(note.id))
 
     # main functions
     def add_note(self, id: int, title: str, content: str,
@@ -161,3 +161,13 @@ class NoteManager:
 
     def get_notes_list(self) -> list[Note]:
         return list(self.notes.values())
+
+    def last_check(self, message: str = "are u sure?") -> bool:
+        i = IO.read_input(message)
+        if i == "y" or i == "Y" or i == "yes" or i == "Yes":
+            return True
+        elif i == "n" or i == "N" or i == "no" or i == "No":
+            return False
+        else:
+            IO.error("invalid input")
+            return False
