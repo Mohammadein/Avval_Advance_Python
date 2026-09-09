@@ -1,12 +1,20 @@
+from enum import Enum
 from Note import Note
 from datetime import date
 import IO
+
+class input_type(Enum):
+    one_line = 0
+    multi_line = 1
 
 add_note_command = "add note"
 create_note_command = "create note"
 list_notes_command = "list notes"
 read_note_by_id_command = "read note"
-note_parameters = ["title", "content"]
+note_parameters = {
+    "title": input_type.one_line,
+    "content": input_type.multi_line
+    }
 
 class NoteManager:
     def __init__(self, notes: list[Note]) -> None:
@@ -31,8 +39,11 @@ class NoteManager:
         values = {}
 
         for parameter in note_parameters:
-            values[parameter] = IO.read_input(parameter)
-        
+            if (note_parameters[parameter] is input_type.one_line):
+                values[parameter] = IO.read_input(parameter)
+            else:
+                values[parameter] = IO.read_multiline_input(parameter)
+                
         note = self.create_note(
             id=len(self.notes) + 1,
             title=values["title"],
