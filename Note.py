@@ -1,5 +1,5 @@
 class Note:
-    def __init__(self, id: int, title: str, content: str,
+    def __init__(self, id: str, title: str, content: str,
                     creation_date: str, last_modified_date: str) -> None:
 
         self.id = id

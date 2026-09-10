@@ -1,4 +1,5 @@
 from enum import Enum
+import uuid
 from Note import Note
 from Config import Config
 from datetime import date
@@ -19,7 +20,7 @@ note_parameters = {
     }
 
 class NoteManager:
-    def __init__(self, notes: dict[int, Note], config: Config | None = None) -> None:
+    def __init__(self, notes: dict[str, Note], config: Config | None = None) -> None:
         self.notes = notes
         self.config = config
 
@@ -97,14 +98,14 @@ class NoteManager:
             IO.show_message("note deleted with ID: " + str(note.id))
 
     # main functions
-    def add_note(self, id: int, title: str, content: str,
+    def add_note(self, id: str, title: str, content: str,
                     creation_date: str, last_modified_date: str) -> Note:
 
         note = Note(id, title, content, creation_date, last_modified_date)
         self.notes[id] = note
         return note
     
-    def create_note(self, id: int, title: str, content: str,
+    def create_note(self, id: str, title: str, content: str,
                     creation_date: str, last_modified_date: str) -> Note:
 
         note = self.add_note(id, title, content, creation_date, last_modified_date)
@@ -117,7 +118,7 @@ class NoteManager:
         IO.note_list_show(notes_list)
         return notes_list
 
-    def show_note_by_id(self, id: int) -> Note | None:
+    def show_note_by_id(self, id: str) -> Note | None:
         note = self.find_note_by_id(id)
         if note is None:
             IO.error("note not found")
@@ -143,23 +144,18 @@ class NoteManager:
     def today(self) -> str:
         return date.today().isoformat()
 
-    def generate_id(self) -> int:
-        if self.config is None:
-            raise ValueError("config is not initialized")
-
-        self.config.id_counter += 1
-        IO.save_config(self.config)
-        return self.config.id_counter
+    def generate_id(self) -> str:
+        return str(uuid.uuid4())
         
 
-    def extract_note_id(self, user_input: str , index: int) -> int:
+    def extract_note_id(self, user_input: str , index: int) -> str:
         word_list = user_input.split()
 
         try:
-            return int(word_list[index])
+            return word_list[index]
         except:
             IO.error("incorrect input")
-            return -1
+            return ""
 
     def note_parameters_str(self) -> str:
         parameters: list[str] = []
@@ -168,7 +164,7 @@ class NoteManager:
 
         return ", ".join(parameters)
 
-    def find_note_by_id(self, id: int) -> Note | None:
+    def find_note_by_id(self, id: str) -> Note | None:
         return self.notes.get(id)      
 
     def get_notes_list(self) -> list[Note]:
