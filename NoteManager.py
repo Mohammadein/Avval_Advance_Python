@@ -73,11 +73,20 @@ class NoteManager:
         self.list_notes()
 
     def handle_show_note(self, user_input: str) -> None:
-        note_id = self.extract_note_id(user_input, 2)
+        try:
+            note_id = self.extract_note_id(user_input, 2)
+        except ValueError as e:
+            IO.error(str(e))
+            return
         self.show_note_by_id(note_id)
 
     def handle_update_note(self, user_input: str) -> None:
-        note_id = self.extract_note_id(user_input, 2)
+        try:
+            note_id = self.extract_note_id(user_input, 2)
+        except ValueError as e:
+            IO.error(str(e))
+            return
+        
         note = self.show_note_by_id(note_id)
         if note is None:
             return
@@ -91,13 +100,17 @@ class NoteManager:
             IO.error("invalid input")
 
     def handle_delete_note(self, user_input: str) -> None:
-        note_id = self.extract_note_id(user_input, 2)
+        try:
+            note_id = self.extract_note_id(user_input, 2)
+        except ValueError as e:
+            IO.error(str(e))
+            return
         note = self.find_note_by_id(note_id)
         if note is None:
             IO.error("note not found")
             return None
 
-        if (self.last_check()):
+        if (self.last_check("Are u sure u want to delete note with id " + note_id)):
             self.delete_note(note)
             IO.show_message("note deleted with ID: " + str(note.id))
 
@@ -158,8 +171,7 @@ class NoteManager:
         try:
             return word_list[index]
         except:
-            IO.error("incorrect input")
-            return ""
+            raise ValueError ("invalid id")
 
     def note_parameters_str(self) -> str:
         parameters: list[str] = []
