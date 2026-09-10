@@ -1,4 +1,4 @@
-from Note import Note
+from .models import Note
 from Config import Config
 import json
 

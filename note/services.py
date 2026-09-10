@@ -1,9 +1,9 @@
 from enum import Enum
 import uuid
-from Note import Note
+from .models import Note
 from Config import Config
 from datetime import date
-import IO
+from . import IO
 
 class input_type(Enum):
     one_line = 0
