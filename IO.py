@@ -1,5 +1,16 @@
 from Note import Note
+from Config import Config
 import json
+
+def load_config() -> Config:
+    config = Config(id_counter=0)
+    try:
+        with open("config.json", "r") as c:
+            config = Config(**json.load(c))
+    except FileNotFoundError:
+        pass
+
+    return config
 
 def load_notes() -> list[Note]:
     notes: list[Note] = []

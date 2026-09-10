@@ -1,5 +1,6 @@
 from enum import Enum
 from Note import Note
+from Config import Config
 from datetime import date
 import IO
 
@@ -18,8 +19,9 @@ note_parameters = {
     }
 
 class NoteManager:
-    def __init__(self, notes: dict[int, Note]) -> None:
+    def __init__(self, notes: dict[int, Note], note_counter: int) -> None:
         self.notes = notes
+        self.note_counter = note_counter
 
     def init(self) -> None:
         self.load_notes()
@@ -29,6 +31,7 @@ class NoteManager:
             self.pars_input(user_input)
 
     def load_notes(self) -> None:
+        self.note_counter = IO.load_config()
         notes_list = IO.load_notes()
         for note in notes_list:
             self.notes[note.id] = note
