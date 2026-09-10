@@ -29,8 +29,12 @@ class NoteManager:
         self.config = IO.load_config()
         IO.init_message()
         while True:
-            user_input : str = IO.read_input()
-            self.pars_input(user_input)
+            try:
+                user_input : str = IO.read_input()
+                self.pars_input(user_input)
+            except EOFError:
+                IO.exit_note_manager()
+                break
 
     def load_notes(self) -> None:
         notes_list = IO.load_notes()

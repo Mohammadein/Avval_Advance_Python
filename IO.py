@@ -46,6 +46,9 @@ def read_multiline_input(message: str | None = None) -> str:
     lines: list[str] = []
     while True:
         try:
+            if "END NOTE" in lines:
+                lines.remove("END NOTE")
+                break
             lines.append(input())
         except EOFError:
             break
@@ -79,3 +82,7 @@ def show_message(message: str) -> None:
 
 def error(message: str | None = None) -> None:
     print("error: " + message if message else "Uknown error")
+
+def exit_note_manager(message: str | None = None) -> None:
+    print(message if message else "")
+    print("Bye :)")
