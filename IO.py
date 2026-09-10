@@ -12,6 +12,14 @@ def load_config() -> Config:
 
     return config
 
+def save_config(config: Config) -> None:
+    try:
+        with open("config.json", "w") as c:
+            json.dump(config.__dict__, c)
+            
+    except FileNotFoundError:
+        pass
+
 def load_notes() -> list[Note]:
     notes: list[Note] = []
     try:

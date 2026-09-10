@@ -19,19 +19,19 @@ note_parameters = {
     }
 
 class NoteManager:
-    def __init__(self, notes: dict[int, Note], note_counter: int) -> None:
+    def __init__(self, notes: dict[int, Note], config: Config | None = None) -> None:
         self.notes = notes
-        self.note_counter = note_counter
+        self.config = config
 
     def init(self) -> None:
         self.load_notes()
+        self.config = IO.load_config()
         IO.init_message()
         while True:
             user_input : str = IO.read_input()
             self.pars_input(user_input)
 
     def load_notes(self) -> None:
-        self.note_counter = IO.load_config()
         notes_list = IO.load_notes()
         for note in notes_list:
             self.notes[note.id] = note
@@ -53,9 +53,9 @@ class NoteManager:
                 values[parameter] = IO.read_input(parameter)
             else:
                 values[parameter] = IO.read_multiline_input(parameter)
-                
+
         note = self.create_note(
-            id=len(self.notes) + 1,
+            id=self.generate_id(),
             title=values["title"],
             content=values["content"],
             creation_date=self.today(),
@@ -142,6 +142,15 @@ class NoteManager:
     # helper functions
     def today(self) -> str:
         return date.today().isoformat()
+
+    def generate_id(self) -> int:
+        if self.config is None:
+            raise ValueError("config is not initialized")
+
+        self.config.id_counter += 1
+        IO.save_config(self.config)
+        return self.config.id_counter
+        
 
     def extract_note_id(self, user_input: str , index: int) -> int:
         word_list = user_input.split()
