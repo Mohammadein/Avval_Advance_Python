@@ -15,11 +15,11 @@
 
 ## 🏗️ ساختار پروژه (cookiecutter flat layout)
 
-- [ ] فایل‌ها را داخل یک پکیج به نام `note/` ببرید (نه فایل‌های flat در ریشه با نام‌های فعلی).
-  - [ ] `Config.py` فعلاً عمداً توی ریشهٔ پروژه نگه داشته شده (import مطلق `from Config import Config` توی `services.py`)؛ بعداً باید به `note/config.py` منتقل بشه و importش نسبی (`from .config import Config`) بشه.
-- [ ] `note/__main__.py` بسازید — نقطهٔ ورود برای `python -m note`، شامل دستورات Typer.
-- [ ] ماژول‌ها را با مسئولیت مشخص جدا کنید: مثلاً `models.py` (کلاس `Note`)، `storage.py` (خواندن/نوشتن JSON — جایگزین `IO.py` فعلی)، `services.py`/`crud.py` (منطق `NoteManager`)، `web_app.py` (اپ FastAPI)، `routers/` (route های وب)، `templates/` (فایل‌های Jinja2).
-  - [ ] `IO.py` فعلی دو مسئولیت قاطی داره: ذخیره‌سازی فایل (`load_config`/`save_config`/`load_notes`/`write_note`/`save_all_notes` → باید برن `storage.py`) و تعامل با کاربر توی ترمینال (`read_input`/`read_multiline_input`/`init_message`/`note_list_show`/`note_show`/`show_message`/`error`/`exit_note_manager`). باید تصمیم بگیریم توابع دستهٔ دوم کجا برن (فایل جدا مثل `console.py`، یا بعداً با دستورات Typer جایگزین بشن).
+- [x] فایل‌ها را داخل یک پکیج به نام `note/` ببرید (نه فایل‌های flat در ریشه با نام‌های فعلی).
+  - [x] `Config.py` فعلاً عمداً توی ریشهٔ پروژه نگه داشته شده (import مطلق `from Config import Config` توی `services.py`)؛ بعداً باید به `note/config.py` منتقل بشه و importش نسبی (`from .config import Config`) بشه.
+- [x] `note/__main__.py` بسازید — نقطهٔ ورود برای `python -m note`، شامل دستورات Typer.
+- [x] ماژول‌ها را با مسئولیت مشخص جدا کنید: مثلاً `models.py` (کلاس `Note`)، `storage.py` (خواندن/نوشتن JSON — جایگزین `IO.py` فعلی)، `services.py`/`crud.py` (منطق `NoteManager`)، `web_app.py` (اپ FastAPI)، `routers/` (route های وب)، `templates/` (فایل‌های Jinja2).
+  - [x] `IO.py` فعلی دو مسئولیت قاطی داره: ذخیره‌سازی فایل (`load_config`/`save_config`/`load_notes`/`write_note`/`save_all_notes` → باید برن `storage.py`) و تعامل با کاربر توی ترمینال (`read_input`/`read_multiline_input`/`init_message`/`note_list_show`/`note_show`/`show_message`/`error`/`exit_note_manager`). باید تصمیم بگیریم توابع دستهٔ دوم کجا برن (فایل جدا مثل `console.py`، یا بعداً با دستورات Typer جایگزین بشن).
 - [ ] `pyproject.toml` بسازید شامل:
   - [ ] `[tool.coverage.run]` با `omit` برای `note/__main__.py` و `note/web_app.py`
   - [ ] بخش `tool.ruff.lint` — **تغییر ندهید**، فقط مطمئن شوید کد بدون خطای lint اجرا می‌شود.
@@ -28,12 +28,12 @@
 # ======= تا اینجا باید کار بشه
 ## ⌨️ CLI با Typer
 
-- [ ] جایگزینی کامل حلقهٔ دستی فعلی (`pars_input` + رشته‌خوانی) با دستورات Typer:
-  - [ ] `note create` — تعاملی: اول title سپس content (چندخطی)، نمایش ID جدید بعد از ساخت.
-  - [ ] `note list` — نمایش خلاصه (ID + title) همهٔ یادداشت‌ها.
-  - [ ] `note show <id>` — نمایش همهٔ جزئیات؛ پیام خطای مناسب برای ID نامعتبر.
-  - [ ] `note update <id>` — نمایش جزئیات فعلی، پرسش این‌که کدام فیلد ویرایش شود، دریافت مقدار جدید، به‌روزرسانی `last_modified_date`.
-  - [ ] `note delete <id>` — پیام تأیید قبل از حذف (`[y/N]`).
+- [x] جایگزینی کامل حلقهٔ دستی فعلی (`pars_input` + رشته‌خوانی) با دستورات Typer:
+  - [x] `note create` — تعاملی: اول title سپس content (چندخطی)، نمایش ID جدید بعد از ساخت.
+  - [x] `note list` — نمایش خلاصه (ID + title) همهٔ یادداشت‌ها.
+  - [x] `note show <id>` — نمایش همهٔ جزئیات؛ پیام خطای مناسب برای ID نامعتبر.
+  - [x] `note update <id>` — نمایش جزئیات فعلی، پرسش این‌که کدام فیلد ویرایش شود، دریافت مقدار جدید، به‌روزرسانی `last_modified_date`.
+  - [x] `note delete <id>` — پیام تأیید قبل از حذف (`[y/N]`).
   - [ ] `note web [--port PORT]` — اجرای Web UI (uvicorn) با پورت اختیاری.
   - [ ] بررسی خروجی `python -m note --help` مطابق نمونهٔ سند.
 
