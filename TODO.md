@@ -63,10 +63,10 @@
 
 ## 🎯 Decorator ها
 
-- [ ] استفادهٔ طبیعی از decorator های Typer (`@app.command`) و FastAPI (`@app.get`, `@app.post`) در پیاده‌سازی بالا (این‌ها به‌خودی‌خود از این بخش پوشش می‌دهند).
-- [ ] حداقل یک decorator سفارشی بنویسید، مثلاً:
-  - [ ] decorator برای لاگ کردن زمان اجرای یک تابع خاص
-  - [ ] decorator برای مدیریت یکپارچهٔ یک نوع خطای خاص در چند تابع (مثلاً خطاهای فایل یا ID نامعتبر) — فعلاً `try/except` تکراری توی هر سه‌تا `handle_show_note`/`handle_update_note`/`handle_delete_note` نوشته شده (کار می‌کنه)؛ بعداً با این decorator یکپارچه بشه
+- [x] استفادهٔ طبیعی از decorator های Typer (`@app.command`) و FastAPI (`@app.get`, `@app.post`) در پیاده‌سازی بالا (این‌ها به‌خودی‌خود از این بخش پوشش می‌دهند).
+- [x] حداقل یک decorator سفارشی بنویسید، مثلاً:
+  - [x] decorator برای لاگ کردن زمان اجرای یک تابع خاص
+  - [x] decorator برای مدیریت یکپارچهٔ یک نوع خطای خاص در چند تابع (مثلاً خطاهای فایل یا ID نامعتبر) — فعلاً `try/except` تکراری توی هر سه‌تا `handle_show_note`/`handle_update_note`/`handle_delete_note` نوشته شده (کار می‌کنه)؛ بعداً با این decorator یکپارچه بشه
 
 ## 📝 Logging
 
