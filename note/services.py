@@ -1,6 +1,5 @@
 import uuid
 from .models import Note
-from Config import Config
 from . import errors
 from datetime import date
 from . import storage
@@ -16,15 +15,13 @@ delete_note_by_id_command = "delete note"
 logger = logging.getLogger(__name__)
 
 class NoteManager:
-    def __init__(self, notes: dict[str, Note], config: Config | None = None) -> None:
+    def __init__(self, notes: dict[str, Note]):
         self.notes = notes
-        self.config = config
 
     def init(self) -> None:
         
         self.load_notes()
-        self.config = storage.load_config()
-        logger.info("NoteManager initialized with %d notes and config: %s", len(self.notes), self.config.__dict__)
+        logger.info("NoteManager initialized with %d notes", len(self.notes))
 
     def load_notes(self) -> None:
         notes_list = storage.load_notes()

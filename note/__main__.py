@@ -8,7 +8,7 @@ from .logging_config import setup_logging
 setup_logging()
 app = typer.Typer()
 
-note_manager = NoteManager({}, None)
+note_manager = NoteManager({})
 note_manager.init()
 
 @app.command()
