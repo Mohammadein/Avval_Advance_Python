@@ -5,6 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+@errors.handle_file_errors
 def load_notes() -> list[Note]:
     notes: list[Note] = []
     try:
