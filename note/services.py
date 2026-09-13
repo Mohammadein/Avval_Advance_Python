@@ -44,7 +44,7 @@ class NoteManager:
         notes_list = self.get_notes_list()
         return notes_list
 
-    def show_note(self, note: Note) -> str | None:
+    def show_note(self, note: Note) -> str:
         return(f"ID: {note.id}" + "\n" +
             f"Title: {note.title}" "\n" +
             f"Content: {note.content}" "\n" +
