@@ -10,7 +10,7 @@ note_manager.init()
 
 @app.command()
 @errors.handle_note_errors
-def create_note():
+def create():
     """Update a new note interactively."""
     
     title = IO.read_input()
@@ -21,7 +21,7 @@ def create_note():
 
 @app.command()
 @errors.handle_note_errors
-def note_lsit():
+def list():
     """List all notes with title"""
 
     notes = note_manager.list_notes()
@@ -30,7 +30,7 @@ def note_lsit():
 
 @app.command()
 @errors.handle_note_errors
-def note_update(note_id: str):
+def update(note_id: str):
     """Update a new note interactively."""
 
     note = note_manager.find_note_by_id(note_id)
@@ -44,7 +44,7 @@ def note_update(note_id: str):
 
 @app.command()
 @errors.handle_note_errors
-def note_delete(note_id: str):
+def delete(note_id: str):
     """Delete a note by id."""
     
     note = note_manager.find_note_by_id(note_id)
@@ -53,7 +53,7 @@ def note_delete(note_id: str):
 
 @app.command()
 @errors.handle_note_errors
-def note_show(note_id: str):
+def show(note_id: str):
     """Show a note by id."""
 
     note = note_manager.find_note_by_id(note_id)
