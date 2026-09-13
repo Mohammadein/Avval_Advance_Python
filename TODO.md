@@ -70,11 +70,11 @@
 
 ## 📝 Logging
 
-- [ ] راه‌اندازی ماژول `logging` با خروجی به فایل `note_manager.log`.
-- [ ] سطح‌بندی مناسب:
-  - [ ] `INFO` برای عملیات موفق (create/update/delete/load/save)
-  - [ ] `ERROR` برای خطاها (فایل پیدا نشد، JSON خراب، ID نامعتبر و غیره)
-  - [ ] `DEBUG` برای جزئیات دیباگ
+- [x] راه‌اندازی ماژول `logging` با خروجی به فایل `note_manager.log`.
+- [x] سطح‌بندی مناسب:
+  - [x] `INFO` برای عملیات موفق (create/update/delete/load/save)
+  - [x] `ERROR` برای خطاها (فایل پیدا نشد، JSON خراب، ID نامعتبر و غیره)
+  - [x] `DEBUG` برای جزئیات دیباگ
 
 ## 💾 ذخیره‌سازی JSON
 
