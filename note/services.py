@@ -3,7 +3,6 @@ from .models import Note
 from . import errors
 from datetime import date
 from . import storage
-from . import logging_config
 import logging
 
 create_note_command = "create note"

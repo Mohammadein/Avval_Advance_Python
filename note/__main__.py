@@ -9,7 +9,11 @@ setup_logging()
 app = typer.Typer()
 
 note_manager = NoteManager({})
-note_manager.init()
+
+@app.callback()
+@errors.handle_note_errors
+def initialize():
+    note_manager.init()
 
 @app.command()
 @errors.handle_note_errors
