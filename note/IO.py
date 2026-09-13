@@ -11,3 +11,6 @@ def show_message(message: str) -> None:
 
 def confirm(message: str) -> bool:
     return console.confirm(message)
+
+def error(message: str | None = None) -> None:
+    console.error(message)

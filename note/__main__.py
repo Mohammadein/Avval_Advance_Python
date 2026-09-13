@@ -9,6 +9,7 @@ note_manager = NoteManager({}, None)
 note_manager.init()
 
 @app.command()
+@errors.handle_note_errors
 def create_note():
     """Update a new note interactively."""
     
@@ -19,6 +20,7 @@ def create_note():
     IO.show_message("یادداشت ساخته شد با شناسه: " + note.id)
 
 @app.command()
+@errors.handle_note_errors
 def note_lsit():
     """List all notes with title"""
 
@@ -27,6 +29,7 @@ def note_lsit():
         IO.show_message(f"ID: {note.id} | Title: {note.title}")
 
 @app.command()
+@errors.handle_note_errors
 def note_update(note_id: str):
     """Update a new note interactively."""
 
@@ -40,6 +43,7 @@ def note_update(note_id: str):
     note_manager.update_note(note, parameter, user_imput)
 
 @app.command()
+@errors.handle_note_errors
 def note_delete(note_id: str):
     """Delete a note by id."""
     
@@ -48,6 +52,7 @@ def note_delete(note_id: str):
         note_manager.delete_note(note)
 
 @app.command()
+@errors.handle_note_errors
 def note_show(note_id: str):
     """Show a note by id."""
 
