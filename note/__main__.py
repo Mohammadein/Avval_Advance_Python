@@ -2,7 +2,10 @@ from .services import NoteManager
 from . import errors
 from . import IO
 import typer
+from .logging_config import setup_logging
 
+
+setup_logging()
 app = typer.Typer()
 
 note_manager = NoteManager({}, None)

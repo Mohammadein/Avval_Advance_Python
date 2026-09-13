@@ -1,11 +1,11 @@
-from enum import Enum
 import uuid
 from .models import Note
 from Config import Config
 from . import errors
 from datetime import date
 from . import storage
-from . import console
+from . import logging_config
+import logging
 
 create_note_command = "create note"
 list_notes_command = "list notes"
@@ -13,14 +13,18 @@ read_note_by_id_command = "read note"
 update_note_by_id_command = "update note"
 delete_note_by_id_command = "delete note"
 
+logger = logging.getLogger(__name__)
+
 class NoteManager:
     def __init__(self, notes: dict[str, Note], config: Config | None = None) -> None:
         self.notes = notes
         self.config = config
 
     def init(self) -> None:
+        
         self.load_notes()
         self.config = storage.load_config()
+        logger.info("NoteManager initialized with %d notes and config: %s", len(self.notes), self.config.__dict__)
 
     def load_notes(self) -> None:
         notes_list = storage.load_notes()
@@ -38,29 +42,34 @@ class NoteManager:
     def create_note(self, title: str, content: str) -> Note:
         note = self.add_note(self.generate_id(), title, content, self.today(), self.today())
         storage.write_note(note)
+        logger.info("Note created with ID: %s", note.id)
         return note
     
     def list_notes(self) -> list[Note]:
         notes_list = self.get_notes_list()
+        logger.info("Listing all notes: %d", len(notes_list))
         return notes_list
 
     def show_note(self, note: Note) -> str:
+        logger.info("Displaying note with ID: %s", note.id)
         return(f"ID: {note.id}" + "\n" +
             f"Title: {note.title}" "\n" +
             f"Content: {note.content}" "\n" +
             f"Creation Date: {note.creation_date}" "\n" +
             f"Last Modified Date: {note.last_modified_date}")
-
+            
     def update_note(self, note: Note, parameter: str, new_input: str) -> Note | None:
         setattr(note, parameter, new_input)
         note.last_modified_date = self.today()
         self.notes[note.id] = note
         storage.save_all_notes(self.get_notes_list())
+        logger.info("Note with ID: %s updated. Parameter: %s", note.id, parameter)
         return note
 
     def delete_note(self, note: Note):
         self.notes.pop(note.id)
         storage.save_all_notes(self.get_notes_list())
+        logger.info("Note with ID: %s deleted", note.id)
 
         
     # helper functconsolens
@@ -69,7 +78,6 @@ class NoteManager:
 
     def generate_id(self) -> str:
         return str(uuid.uuid4())
-        
 
     def extract_note_id(self, user_input: str , index: int) -> str:
         word_list = user_input.split()

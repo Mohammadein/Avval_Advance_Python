@@ -1,7 +1,9 @@
 import json
-
+import logging
 from . import IO
 import functools
+
+logger = logging.getLogger(__name__)
 
 class NoteNotFoundError(Exception):
     pass
@@ -14,11 +16,11 @@ def handle_note_errors(func):
         try:
             return func(*args, **kwargs)
         except NoteNotFoundError:
+            logger.error("Note not found")
             IO.error("Note not found")
         except InvalidInput:
+            logger.error("Invalid input")
             IO.error("Invalid input")
-        except Exception as e:
-            IO.error(str(e))
     return wrapper
 
 def handle_file_errors(func):
@@ -27,13 +29,15 @@ def handle_file_errors(func):
         try:
             return func(*args, **kwargs)
         except FileNotFoundError:
+            logger.error("File not found")
             IO.error("File not found")
         except json.JSONDecodeError:
+            logger.error("Error decoding JSON")
             IO.error("Error decoding JSON")
         except FileExistsError:
+            logger.error("File already exists")
             IO.error("File already exists")
         except PermissionError:
+            logger.error("Permission denied")
             IO.error("Permission denied")
-        except Exception as e:
-            IO.error(str(e))
     return wrapper
