@@ -37,7 +37,7 @@ class NoteManager:
     
     def create_note(self, title: str, content: str) -> Note:
         note = self.add_note(self.generate_id(), title, content, self.today(), self.today())
-        storage.write_note(note)
+        storage.save_all_notes(self.get_notes_list())
         logger.info("Note created with ID: %s", note.id)
         return note
     
