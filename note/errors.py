@@ -16,6 +16,9 @@ class NoteNotFoundError(Exception):
 class InvalidInput(Exception):
     pass
 
+class InvalidNote(Exception):
+    pass
+
 
 def handle_note_errors(func):
     @functools.wraps(func)
@@ -33,6 +36,8 @@ def handle_note_errors(func):
             FileNotFoundError,
             FileExistsError,
             json.JSONDecodeError,
+            ValueError,
+            InvalidNote
         ):
             IO.error("Storage operation failed")
             raise typer.Exit(code=1)
@@ -55,5 +60,11 @@ def handle_file_errors(func):
             raise
         except PermissionError:
             logger.exception("Permission denied")
+            raise
+        except ValueError as e:
+            logger.exception(f"Value error: {e}")
+            raise
+        except InvalidNote:
+            logger.exception("Invalid saved note parameter")
             raise
     return wrapper

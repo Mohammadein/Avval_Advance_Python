@@ -21,9 +21,14 @@ def load_notes() -> list[Note]:
             if not isinstance(n, dict):
                 raise ValueError("a note must be an object")
 
-            missing = required_note_fields - n.keys()
-            if missing:
-                raise ValueError(f"Missing note fields: {missing}")
+            missing_fields = required_note_fields - n.keys()
+            if missing_fields:
+                raise errors.InvalidNote(f"Missing note fields: {missing_fields}")
+            
+            extra_fields = n.keys() - required_note_fields
+            if extra_fields:
+                raise errors.InvalidNote(f"Unexpected note fields: {extra_fields}")
+            
             notes.append(Note(**n))
 
         logger.info("Loaded %d notes", len(notes))
