@@ -4,3 +4,4 @@ project_discription.md
 config.json
 test.py
 note_manager.log
+.coverage

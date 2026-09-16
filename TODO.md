@@ -20,8 +20,8 @@
 - [x] `note/__main__.py` بسازید — نقطهٔ ورود برای `python -m note`، شامل دستورات Typer.
 - [x] ماژول‌ها را با مسئولیت مشخص جدا کنید: مثلاً `models.py` (کلاس `Note`)، `storage.py` (خواندن/نوشتن JSON — جایگزین `IO.py` فعلی)، `services.py`/`crud.py` (منطق `NoteManager`)، `web_app.py` (اپ FastAPI)، `routers/` (route های وب)، `templates/` (فایل‌های Jinja2).
   - [x] `IO.py` فعلی دو مسئولیت قاطی داره: ذخیره‌سازی فایل (`load_config`/`save_config`/`load_notes`/`write_note`/`save_all_notes` → باید برن `storage.py`) و تعامل با کاربر توی ترمینال (`read_input`/`read_multiline_input`/`init_message`/`note_list_show`/`note_show`/`show_message`/`error`/`exit_note_manager`). باید تصمیم بگیریم توابع دستهٔ دوم کجا برن (فایل جدا مثل `console.py`، یا بعداً با دستورات Typer جایگزین بشن).
-- [ ] `pyproject.toml` بسازید شامل:
-  - [ ] `[tool.coverage.run]` با `omit` برای `note/__main__.py` و `note/web_app.py`
+- [x] `pyproject.toml` بسازید شامل:
+  - [x] `[tool.coverage.run]` با `omit` برای `note/__main__.py` و `note/web_app.py`
   - [ ] بخش `tool.ruff.lint` — **تغییر ندهید**، فقط مطمئن شوید کد بدون خطای lint اجرا می‌شود.
   - [ ] dependency ها (`typer`, `fastapi`, `uvicorn`, `jinja2`, `pytest`, `pytest-cov`).
 
