@@ -29,7 +29,7 @@ def load_notes() -> list[Note]:
             if extra_fields:
                 raise errors.InvalidNote(f"Unexpected note fields: {extra_fields}")
             
-            notes.append(Note(**n))
+            notes.append(Note.from_dict(n))
 
         logger.info("Loaded %d notes", len(notes))
 
@@ -43,7 +43,7 @@ def load_notes() -> list[Note]:
 def save_all_notes(notes: list[Note]):
     notes_dicts: list[dict] = []
     for note in notes:
-        notes_dicts.append(note.__dict__)
+        notes_dicts.append(note.to_dict())
 
     with open("notes.json", "w") as f:
         json.dump(notes_dicts, f)
