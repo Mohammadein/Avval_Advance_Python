@@ -37,6 +37,18 @@ def test_list_notes(test_note_manager):
     assert notes[0].title == "Note 1"
     assert notes[1].title == "Note 2"
 
+def test_show_note(test_note_manager):
+    test_note_manager.create_note("Test Note", "This is a test note.")
+    notes = test_note_manager.list_notes()
+    detail = test_note_manager.show_note(notes[0])
+    note_to_show = test_note_manager.find_note_by_id(notes[0].id)
+    assert note_to_show is not None
+    assert detail == (f"ID: {note_to_show.id}" + "\n" +
+            f"Title: {note_to_show.title}" "\n" +
+            f"Content: {note_to_show.content}" "\n" +
+            f"Creation Date: {note_to_show.creation_date}" "\n" +
+            f"Last Modified Date: {note_to_show.last_modified_date}")
+    
 def test_search_notes(test_note_manager):
     note1 = test_note_manager.create_note("Note 1", "Content 1")
     note1_searched = test_note_manager.find_note_by_id(note1.id)

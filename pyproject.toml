@@ -1,2 +1,5 @@
-[tooml.coverage.run]
-omit =["note/__main.py__", "note/web_app.py"]
+[tool.coverage.run]
+omit = [
+    "note/__main__.py",
+    "note/web_app.py",
+]
