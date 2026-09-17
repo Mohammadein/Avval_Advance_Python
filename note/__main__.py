@@ -1,25 +1,19 @@
-from .services import NoteManager
+from note import dependencies
 from . import errors
 from . import IO
 import typer
 from .logging_config import setup_logging
 
-
 setup_logging()
 app = typer.Typer()
 
-note_manager = NoteManager({})
-
-@app.callback()
-@errors.handle_note_errors
-def initialize():
-    note_manager.init()
 
 @app.command()
 @errors.handle_note_errors
 def create():
     """Update a new note interactively."""
-    
+    note_manager = dependencies.get_note_manager()
+
     title = IO.read_input()
     content = IO.read_multiline_input("content (end with END NOTE):")
     note = note_manager.create_note(title, content)
@@ -30,6 +24,7 @@ def create():
 @errors.handle_note_errors
 def list():
     """List all notes with title"""
+    note_manager = dependencies.get_note_manager()
 
     notes = note_manager.list_notes()
     for note in notes:
@@ -39,6 +34,7 @@ def list():
 @errors.handle_note_errors
 def update(note_id: str):
     """Update a new note interactively."""
+    note_manager = dependencies.get_note_manager()
 
     note = note_manager.find_note_by_id(note_id)
 
@@ -53,6 +49,7 @@ def update(note_id: str):
 @errors.handle_note_errors
 def delete(note_id: str):
     """Delete a note by id."""
+    note_manager = dependencies.get_note_manager()
     
     note = note_manager.find_note_by_id(note_id)
     if IO.confirm("Do u really want to delete note with id:" + note_id):
@@ -62,6 +59,7 @@ def delete(note_id: str):
 @errors.handle_note_errors
 def show(note_id: str):
     """Show a note by id."""
+    note_manager = dependencies.get_note_manager()
 
     note = note_manager.find_note_by_id(note_id)
     IO.show_message(note_manager.show_note(note))

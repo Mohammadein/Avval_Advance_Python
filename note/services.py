@@ -23,6 +23,7 @@ class NoteManager:
         logger.info("NoteManager initialized with %d notes", len(self.notes))
 
     def load_notes(self) -> None:
+        self.notes.clear()
         notes_list = storage.load_notes()
         for note in notes_list:
             self.notes[note.id] = note

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>list notes</title>
+</head>
+<body>
+    <h1>{{ notes | length }} notes</h1>
+
+    {% for note in notes %}
+        <article>
+            <h2>id: {{ note.id }}</h2>
+            <p>{{ note.title }}</p>
+        </article>
+    {% else %}
+        <p>There is no note</p>
+    {% endfor %}
+</body>
+</html>
