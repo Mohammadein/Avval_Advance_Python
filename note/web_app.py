@@ -55,3 +55,23 @@ def update_note(note_id: str, parameter: str = Form(), new_input: str = Form()):
     note = note_manager.find_note_by_id(note_id)
     note_manager.update_note(note, parameter, new_input)
     return RedirectResponse(url="/notes", status_code=303)
+
+@app.get("/notes/{note_id}/delete", response_class=HTMLResponse)
+def show_delete_note_confirm(request: Request, note_id: str):
+    note_manager = dependencies.get_note_manager()
+    note = note_manager.find_note_by_id(note_id)
+    if not note:
+        return RedirectResponse(url="/notes", status_code=303)
+    return template.TemplateResponse(
+        request=request,
+        name="delete_note.html",
+        context={"note": note},
+    )
+
+@app.post("/notes/{note_id}/delete")
+def delete_note(note_id: str):
+    note_manager = dependencies.get_note_manager()
+    note = note_manager.find_note_by_id(note_id)
+    if note:
+        note_manager.delete_note(note)
+    return RedirectResponse(url="/notes", status_code=303)
