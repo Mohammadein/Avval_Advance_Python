@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Update Note{% endblock %}
+
+{% block content %}
+    <h2>Update Note</h2>
+
+    <section>
+        <h3>Current Note</h3>
+        <p><strong>Title:</strong> {{ note.title }}</p>
+        <p><strong>Content:</strong> {{ note.content }}</p>
+    </section>
+
+    <form action="/notes/{{ note.id }}/edit" method="post">
+        <div>
+            <label for="parameter">Field</label>
+            <select id="parameter" name="parameter" required>
+                <option value="">Select a field</option>
+                <option value="title">Title</option>
+                <option value="content">Content</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="new_input">New value</label>
+            <textarea id="new_input" name="new_input" rows="8" required></textarea>
+        </div>
+
+        <button type="submit">Save</button>
+        <a href="/notes">Cancel</a>
+    </form>
+{% endblock %}

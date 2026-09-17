@@ -36,3 +36,22 @@ def create_note(title: str = Form(), content: str = Form()):
     note_manager.create_note(title, content)
 
     return RedirectResponse(url="/notes" , status_code=303)
+
+@app.get("/notes/{note_id}/edit", response_class=HTMLResponse)
+def show_edit_note_form(request: Request, note_id: str):
+    note_manager = dependencies.get_note_manager()
+    note = note_manager.find_note_by_id(note_id)
+    if not note:
+        return RedirectResponse(url="/notes", status_code=303)
+    return template.TemplateResponse(
+        request=request,
+        name="update_note.html",
+        context={"note": note},
+    )
+
+@app.post("/notes/{note_id}/edit")
+def update_note(note_id: str, parameter: str = Form(), new_input: str = Form()):
+    note_manager = dependencies.get_note_manager()
+    note = note_manager.find_note_by_id(note_id)
+    note_manager.update_note(note, parameter, new_input)
+    return RedirectResponse(url="/notes", status_code=303)
