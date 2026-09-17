@@ -75,3 +75,15 @@ def delete_note(note_id: str):
     if note:
         note_manager.delete_note(note)
     return RedirectResponse(url="/notes", status_code=303)
+
+@app.get("/notes/{note_id}", response_class=HTMLResponse)
+def show_note(request: Request, note_id: str):
+    note_manager = dependencies.get_note_manager()
+    note = note_manager.find_note_by_id(note_id)
+    if not note:
+        return RedirectResponse(url="/notes", status_code=303)
+    return template.TemplateResponse(
+        request=request,
+        name="show_note.html",
+        context={"note": note},
+    )

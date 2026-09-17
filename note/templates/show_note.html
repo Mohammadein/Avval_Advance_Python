@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Note Details{% endblock %}
+
+{% block content %}
+    <h2>Note Details</h2>
+
+    <section>
+        <p><strong>ID:</strong> {{ note.id }}</p>
+        <p><strong>Title:</strong> {{ note.title }}</p>
+        <p><strong>Content:</strong> {{ note.content }}</p>
+        <p><strong>Created:</strong> {{ note.creation_date }}</p>
+        <p><strong>Last Modified:</strong> {{ note.last_modified_date }}</p>
+    </section>
+
+    <a href="/notes/{{ note.id }}/edit">Edit</a>
+    <a href="/notes/{{ note.id }}/delete">Delete</a>
+    <a href="/notes">Back to list</a>
+{% endblock %}
