@@ -4,7 +4,7 @@ import logging
 
 import typer
 
-from . import IO
+from . import cli_io
 
 logger = logging.getLogger(__name__)
 
@@ -27,10 +27,10 @@ def handle_note_errors(func):
             return func(*args, **kwargs)
         except NoteNotFoundError:
             logger.error("Note not found")
-            IO.error("Note not found")
+            cli_io.error("Note not found")
         except InvalidInput:
             logger.error("Invalid input")
-            IO.error("Invalid input")
+            cli_io.error("Invalid input")
         except (
             PermissionError,
             FileNotFoundError,
@@ -39,7 +39,7 @@ def handle_note_errors(func):
             ValueError,
             InvalidNote
         ):
-            IO.error("Storage operation failed")
+            cli_io.error("Storage operation failed")
             raise typer.Exit(code=1)
     return wrapper
 
@@ -61,8 +61,8 @@ def handle_file_errors(func):
         except PermissionError:
             logger.exception("Permission denied")
             raise
-        except ValueError as e:
-            logger.exception(f"Value error: {e}")
+        except ValueError:
+            logger.exception("Value error")
             raise
         except InvalidNote:
             logger.exception("Invalid saved note parameter")

@@ -1,6 +1,7 @@
+import datetime
 import logging
 import uuid
-from datetime import date
+from zoneinfo import ZoneInfo
 
 from . import errors, storage
 from .models import Note
@@ -71,7 +72,7 @@ class NoteManager:
         
     # helper functconsolens
     def today(self) -> str:
-        return date.today().isoformat()
+        return datetime.datetime.now(tz=ZoneInfo("Asia/Tehran")).date().isoformat()
 
     def generate_id(self) -> str:
         return str(uuid.uuid4())

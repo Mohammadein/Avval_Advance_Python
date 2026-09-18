@@ -1,6 +1,6 @@
 # TODO — تکمیل پروژه سیستم مدیریت یادداشت شخصی
 
-بر اساس بررسی `project_discription.md` در برابر کد فعلی (`Note.py`, `NoteManager.py`, `IO.py`, `__main__.py`) و تست‌های عملی انجام‌شده.
+بر اساس بررسی `project_discription.md` در برابر کد فعلی (`Note.py`, `NoteManager.py`, `cli_io.py`, `__main__.py`) و تست‌های عملی انجام‌شده.
 
 ## 🐛 باگ‌های تأیید شده (اولویت بالا)
 
@@ -18,8 +18,8 @@
 - [x] فایل‌ها را داخل یک پکیج به نام `note/` ببرید (نه فایل‌های flat در ریشه با نام‌های فعلی).
   - [x] `Config.py` فعلاً عمداً توی ریشهٔ پروژه نگه داشته شده (import مطلق `from Config import Config` توی `services.py`)؛ بعداً باید به `note/config.py` منتقل بشه و importش نسبی (`from .config import Config`) بشه.
 - [x] `note/__main__.py` بسازید — نقطهٔ ورود برای `python -m note`، شامل دستورات Typer.
-- [x] ماژول‌ها را با مسئولیت مشخص جدا کنید: مثلاً `models.py` (کلاس `Note`)، `storage.py` (خواندن/نوشتن JSON — جایگزین `IO.py` فعلی)، `services.py`/`crud.py` (منطق `NoteManager`)، `web_app.py` (اپ FastAPI)، `routers/` (route های وب)، `templates/` (فایل‌های Jinja2).
-  - [x] `IO.py` فعلی دو مسئولیت قاطی داره: ذخیره‌سازی فایل (`load_config`/`save_config`/`load_notes`/`write_note`/`save_all_notes` → باید برن `storage.py`) و تعامل با کاربر توی ترمینال (`read_input`/`read_multiline_input`/`init_message`/`note_list_show`/`note_show`/`show_message`/`error`/`exit_note_manager`). باید تصمیم بگیریم توابع دستهٔ دوم کجا برن (فایل جدا مثل `console.py`، یا بعداً با دستورات Typer جایگزین بشن).
+- [x] ماژول‌ها را با مسئولیت مشخص جدا کنید: مثلاً `models.py` (کلاس `Note`)، `storage.py` (خواندن/نوشتن JSON — جایگزین `cli_io.py` فعلی)، `services.py`/`crud.py` (منطق `NoteManager`)، `web_app.py` (اپ FastAPI)، `routers/` (route های وب)، `templates/` (فایل‌های Jinja2).
+  - [x] `cli_io.py` فعلی دو مسئولیت قاطی داره: ذخیره‌سازی فایل (`load_config`/`save_config`/`load_notes`/`write_note`/`save_all_notes` → باید برن `storage.py`) و تعامل با کاربر توی ترمینال (`read_input`/`read_multiline_input`/`init_message`/`note_list_show`/`note_show`/`show_message`/`error`/`exit_note_manager`). باید تصمیم بگیریم توابع دستهٔ دوم کجا برن (فایل جدا مثل `console.py`، یا بعداً با دستورات Typer جایگزین بشن).
 - [x] `pyproject.toml` بسازید شامل:
   - [x] `[tool.coverage.run]` با `omit` برای `note/__main__.py` و `note/web_app.py`
   - [ ] بخش `tool.ruff.lint` — **تغییر ندهید**، فقط مطمئن شوید کد بدون خطای lint اجرا می‌شود.
@@ -57,8 +57,8 @@
 
 ## 🧱 شیءگرایی (OOP)
 
-- [x] کلاس `Note` را کامل‌تر کنید: کپسوله‌سازی مناسب attribute ها، و متدهای کاربردی (مثلاً `to_dict`/`from_dict` برای تبدیل به/از JSON، به‌جای استفاده مستقیم از `note.__dict__` در `IO.py`).
-- [x] جدا کردن مسئولیت‌های `NoteManager` از I/O مستقیم (چاپ پیام، گرفتن input) — طبق سند، منطق اصلی (business logic) باید بدون وابستگی به CLI قابل تست باشد. در حال حاضر متدهای `handle_*` و حتی برخی متدهای اصلی مستقیماً از `IO.read_input`/`print` استفاده می‌کنند که تفکیک UI از منطق را نقض می‌کند.
+- [x] کلاس `Note` را کامل‌تر کنید: کپسوله‌سازی مناسب attribute ها، و متدهای کاربردی (مثلاً `to_dict`/`from_dict` برای تبدیل به/از JSON، به‌جای استفاده مستقیم از `note.__dict__` در `cli_io.py`).
+- [x] جدا کردن مسئولیت‌های `NoteManager` از I/O مستقیم (چاپ پیام، گرفتن input) — طبق سند، منطق اصلی (business logic) باید بدون وابستگی به CLI قابل تست باشد. در حال حاضر متدهای `handle_*` و حتی برخی متدهای اصلی مستقیماً از `cli_io.read_input`/`print` استفاده می‌کنند که تفکیک UI از منطق را نقض می‌کند.
 - [x] تغییر ID از `int` به `str` (uuid) در کلاس `Note` و همه‌جا که از نوع `int` برای id استفاده شده.
 
 ## 🎯 Decorator ها

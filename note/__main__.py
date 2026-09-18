@@ -3,7 +3,7 @@ import uvicorn
 
 from note import dependencies
 
-from . import IO, errors
+from . import cli_io, errors
 from .logging_config import setup_logging
 
 setup_logging()
@@ -20,11 +20,11 @@ def create():
     """Update a new note interactively."""
     note_manager = dependencies.get_note_manager()
 
-    title = IO.read_input()
-    content = IO.read_multiline_input("content (end with END NOTE):")
+    title = cli_io.read_input()
+    content = cli_io.read_multiline_input("content (end with END NOTE):")
     note = note_manager.create_note(title, content)
 
-    IO.show_message("یادداشت ساخته شد با شناسه: " + note.id)
+    cli_io.show_message("یادداشت ساخته شد با شناسه: " + note.id)
 
 @app.command()
 @errors.handle_note_errors
@@ -34,7 +34,7 @@ def list():
 
     notes = note_manager.list_notes()
     for note in notes:
-        IO.show_message(f"ID: {note.id} | Title: {note.title}")
+        cli_io.show_message(f"ID: {note.id} | Title: {note.title}")
 
 @app.command()
 @errors.handle_note_errors
@@ -44,11 +44,11 @@ def update(note_id: str):
 
     note = note_manager.find_note_by_id(note_id)
 
-    parameter = IO.read_input("Enter parameter to update (title or content):")
+    parameter = cli_io.read_input("Enter parameter to update (title or content):")
     if parameter != "title" and parameter != "content":
         raise errors.InvalidInput
     
-    user_imput = IO.read_input("Enter new " + parameter)
+    user_imput = cli_io.read_input("Enter new " + parameter)
     note_manager.update_note(note, parameter, user_imput)
 
 @app.command()
@@ -58,7 +58,7 @@ def delete(note_id: str):
     note_manager = dependencies.get_note_manager()
     
     note = note_manager.find_note_by_id(note_id)
-    if IO.confirm("Do u really want to delete note with id:" + note_id):
+    if cli_io.confirm("Do u really want to delete note with id:" + note_id):
         note_manager.delete_note(note)
 
 @app.command()
@@ -68,7 +68,7 @@ def show(note_id: str):
     note_manager = dependencies.get_note_manager()
 
     note = note_manager.find_note_by_id(note_id)
-    IO.show_message(note_manager.show_note(note))
+    cli_io.show_message(note_manager.show_note(note))
 
 
 if __name__ == "__main__":
