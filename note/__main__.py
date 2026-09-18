@@ -17,7 +17,7 @@ def web(port: int = 8000):
 @app.command()
 @errors.handle_note_errors
 def create():
-    """Update a new note interactively."""
+    """Create a new note interactively."""
     note_manager = dependencies.get_note_manager()
 
     title = cli_io.read_input()
