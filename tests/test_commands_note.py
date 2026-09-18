@@ -16,6 +16,24 @@ def test_create_note(test_note_manager):
     assert notes[0].title == "Test Note"
     assert notes[0].content == "This is a test note."
 
+
+@pytest.mark.parametrize(
+    ("title", "content", "expected_message"),
+    [
+        ("", "Content", "title cannot be empty"),
+        ("   ", "Content", "title cannot be empty"),
+        ("Title", "", "content cannot be empty"),
+        ("Title", "\t\n", "content cannot be empty"),
+    ],
+)
+def test_create_note_rejects_blank_fields(
+    test_note_manager, title, content, expected_message
+):
+    with pytest.raises(InvalidInput, match=expected_message):
+        test_note_manager.create_note(title, content)
+
+    assert test_note_manager.list_notes() == []
+
 def test_delete_note(test_note_manager):
     test_note_manager.create_note("Test Note", "This is a test note.")
     notes = test_note_manager.list_notes()

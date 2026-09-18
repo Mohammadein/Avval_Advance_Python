@@ -38,6 +38,12 @@ class NoteManager:
         return note
     
     def create_note(self, title: str, content: str) -> Note:
+        if not title.strip():
+            raise errors.InvalidInput("title cannot be empty")
+
+        if not content.strip():
+            raise errors.InvalidInput("content cannot be empty")
+
         timestamp = self.now()
         note = Note(self.generate_id(), title, content, timestamp, timestamp)
         logger.debug("Persisting newly created note with ID: %s", note.id)
