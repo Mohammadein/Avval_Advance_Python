@@ -38,9 +38,11 @@ class NoteManager:
         return note
     
     def create_note(self, title: str, content: str) -> Note:
-        note = self.add_note(self.generate_id(), title, content, self.now(), self.now())
+        timestamp = self.now()
+        note = Note(self.generate_id(), title, content, timestamp, timestamp)
         logger.debug("Persisting newly created note with ID: %s", note.id)
-        storage.save_all_notes(self.get_notes_list())
+        storage.save_all_notes([*self.get_notes_list(), note])
+        self.notes[note.id] = note
         logger.info("Note created with ID: %s", note.id)
         return note
     
@@ -67,18 +69,41 @@ class NoteManager:
         if not new_input.strip():
             raise errors.InvalidInput(f"{parameter} cannot be empty")
 
-        logger.debug("Updating %s for note with ID: %s", parameter, note.id)
-        setattr(note, parameter, new_input.strip())
-        note.last_modified_date = self.now()
-        storage.save_all_notes(self.get_notes_list())
+        managed_note = self.find_note_by_id(note.id)
+        updated_note = Note(
+            id=managed_note.id,
+            title=managed_note.title,
+            content=managed_note.content,
+            creation_date=managed_note.creation_date,
+            last_modified_date=managed_note.last_modified_date,
+        )
+        setattr(updated_note, parameter, new_input.strip())
+        updated_note.last_modified_date = self.now()
 
-        logger.info("Note with ID %s updated: %s", note.id, parameter,)
-        return note
+        logger.debug("Updating %s for note with ID: %s", parameter, managed_note.id)
+        storage.save_all_notes(
+            [
+                updated_note if saved_note.id == managed_note.id else saved_note
+                for saved_note in self.get_notes_list()
+            ]
+        )
+        setattr(managed_note, parameter, getattr(updated_note, parameter))
+        managed_note.last_modified_date = updated_note.last_modified_date
+
+        logger.info("Note with ID %s updated: %s", managed_note.id, parameter,)
+        return managed_note
 
     def delete_note(self, note: Note):
-        self.notes.pop(note.id)
-        storage.save_all_notes(self.get_notes_list())
-        logger.info("Note with ID: %s deleted", note.id)
+        managed_note = self.find_note_by_id(note.id)
+        storage.save_all_notes(
+            [
+                saved_note
+                for saved_note in self.get_notes_list()
+                if saved_note.id != managed_note.id
+            ]
+        )
+        self.notes.pop(managed_note.id)
+        logger.info("Note with ID: %s deleted", managed_note.id)
 
         
     # helper functconsolens

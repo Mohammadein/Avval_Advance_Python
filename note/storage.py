@@ -1,12 +1,15 @@
 import inspect
 import json
 import logging
+import tempfile
+from pathlib import Path
 
 from . import errors
 from .models import Note
 
 logger = logging.getLogger(__name__)
 required_note_fields= set(inspect.signature(Note).parameters)
+NOTES_FILE = Path("notes.json")
 
 @errors.handle_file_errors
 def load_notes() -> list[Note]:
@@ -15,7 +18,7 @@ def load_notes() -> list[Note]:
     note_ids: set[str] = set()
     try:
         logger.debug("Opening notes.json for loading")
-        with open("notes.json", "r") as f:
+        with NOTES_FILE.open("r", encoding="utf-8") as f:
             notes_list = json.load(f)
         if not isinstance(notes_list, list):
             raise errors.InvalidNote("notes.json must contain a list")
@@ -58,12 +61,24 @@ def load_notes() -> list[Note]:
 
 # output
 @errors.handle_file_errors  
-def save_all_notes(notes: list[Note]):
+def save_all_notes(notes: list[Note]) -> None:
     notes_dicts: list[dict] = []
     logger.debug("Serializing %d notes for storage", len(notes))
     for note in notes:
         notes_dicts.append(note.to_dict())
 
-    with open("notes.json", "w") as f:
-        json.dump(notes_dicts, f)
+    temporary_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=NOTES_FILE.parent,
+            delete=False,
+        ) as temporary_file:
+            temporary_path = Path(temporary_file.name)
+            json.dump(notes_dicts, temporary_file)
+        temporary_path.replace(NOTES_FILE)
+    finally:
+        if temporary_path is not None and temporary_path.exists():
+            temporary_path.unlink()
     logger.info("All notes saved to file")

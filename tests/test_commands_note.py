@@ -4,6 +4,7 @@ from zoneinfo import ZoneInfo
 import pytest
 
 import note.errors
+import note.services
 from note.errors import InvalidInput
 from note.services import NoteManager
 
@@ -104,3 +105,50 @@ def test_load_after_save(test_note_manager):
         assert note_before.content == note_after.content
         assert note_before.creation_date == note_after.creation_date
         assert note_before.last_modified_date == note_after.last_modified_date
+
+
+def test_create_note_keeps_memory_unchanged_when_save_fails(
+    test_note_manager, monkeypatch
+):
+    def fail_to_save(notes):
+        raise PermissionError
+
+    monkeypatch.setattr(note.services.storage, "save_all_notes", fail_to_save)
+
+    with pytest.raises(PermissionError):
+        test_note_manager.create_note("Title", "Content")
+
+    assert test_note_manager.list_notes() == []
+
+
+def test_update_note_keeps_memory_unchanged_when_save_fails(
+    test_note_manager, monkeypatch
+):
+    created_note = test_note_manager.create_note("Original title", "Original content")
+
+    def fail_to_save(notes):
+        raise PermissionError
+
+    monkeypatch.setattr(note.services.storage, "save_all_notes", fail_to_save)
+
+    with pytest.raises(PermissionError):
+        test_note_manager.update_note(created_note, "title", "Updated title")
+
+    assert created_note.title == "Original title"
+    assert test_note_manager.find_note_by_id(created_note.id).title == "Original title"
+
+
+def test_delete_note_keeps_memory_unchanged_when_save_fails(
+    test_note_manager, monkeypatch
+):
+    created_note = test_note_manager.create_note("Title", "Content")
+
+    def fail_to_save(notes):
+        raise PermissionError
+
+    monkeypatch.setattr(note.services.storage, "save_all_notes", fail_to_save)
+
+    with pytest.raises(PermissionError):
+        test_note_manager.delete_note(created_note)
+
+    assert test_note_manager.find_note_by_id(created_note.id) is created_note
