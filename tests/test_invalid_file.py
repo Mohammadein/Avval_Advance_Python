@@ -12,7 +12,7 @@ def test_invalid_file(tmp_path, monkeypatch):
     notes_file = tmp_path / "notes.json"
     notes_file.write_text("{bad json", encoding="utf-8")
     manager = NoteManager({})
-    with pytest.raises(json.JSONDecodeError):
+    with pytest.raises(errors.InvalidNote):
         manager.init()
 
 def test_missing_field(tmp_path, monkeypatch):

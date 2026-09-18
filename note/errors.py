@@ -52,9 +52,11 @@ def handle_file_errors(func):
         except FileNotFoundError:
             logger.exception("File not found")
             raise
-        except json.JSONDecodeError:
-            logger.exception("Error decoding JSON")
-            raise
+        except json.JSONDecodeError as exc:
+            logger.exception("Invalid notes.json")
+            raise InvalidNote(
+                "notes.json contains invalid JSON"
+            ) from exc
         except FileExistsError:
             logger.exception("File already exists")
             raise
