@@ -56,12 +56,20 @@ class NoteManager:
             f"Creation Date: {note.creation_date}" "\n" +
             f"Last Modified Date: {note.last_modified_date}")
             
-    def update_note(self, note: Note, parameter: str, new_input: str) -> Note | None:
-        setattr(note, parameter, new_input)
+    def update_note(self, note: Note, parameter: str, new_input: str) -> Note:
+        allowed_fields = {"title", "content"}
+
+        if parameter not in allowed_fields:
+            raise errors.InvalidInput(f"Cannot update field: {parameter}")
+
+        if not new_input.strip():
+            raise errors.InvalidInput(f"{parameter} cannot be empty")
+
+        setattr(note, parameter, new_input.strip())
         note.last_modified_date = self.today()
-        self.notes[note.id] = note
         storage.save_all_notes(self.get_notes_list())
-        logger.info("Note with ID: %s updated. Parameter: %s", note.id, parameter)
+
+        logger.info("Note with ID %s updated: %s", note.id, parameter,)
         return note
 
     def delete_note(self, note: Note):

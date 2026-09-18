@@ -1,6 +1,7 @@
 import pytest
 
 import note.errors
+from note.errors import InvalidInput
 from note.services import NoteManager
 
 
@@ -29,6 +30,16 @@ def test_update_note(test_note_manager, monkeypatch):
     assert updated_notes[0].content == "This is an updated note."
     assert updated_notes[0].last_modified_date == "2026-09-15"
     assert updated_notes[0].creation_date == "2026-09-1"
+
+def test_cannot_update_note_id(test_note_manager):
+    note = test_note_manager.create_note("Title", "Content")
+    original_id = note.id
+
+    with pytest.raises(InvalidInput):
+        test_note_manager.update_note(note, "id", "changed-id")
+
+    assert note.id == original_id
+    assert list(test_note_manager.notes) == [original_id]
 
 def test_list_notes(test_note_manager):
     test_note_manager.create_note("Note 1", "Content 1")
