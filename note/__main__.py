@@ -1,12 +1,19 @@
+import uvicorn
+
 from note import dependencies
 from . import errors
 from . import IO
 import typer
 from .logging_config import setup_logging
 
+
 setup_logging()
 app = typer.Typer()
 
+@app.command()
+def web(port: int = 8000):
+    """Run the web application."""
+    uvicorn.run("note.web_app:app", host="127.0.0.1", port=port)
 
 @app.command()
 @errors.handle_note_errors
