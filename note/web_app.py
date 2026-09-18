@@ -40,9 +40,10 @@ def create_note(title: str = Form(), content: str = Form()):
 @app.get("/notes/{note_id}/edit", response_class=HTMLResponse)
 def show_edit_note_form(request: Request, note_id: str):
     note_manager = dependencies.get_note_manager()
-    note = note_manager.find_note_by_id(note_id)
-    if not note:
-        return RedirectResponse(url="/notes", status_code=303)
+    try:
+        note = note_manager.find_note_by_id(note_id)
+    except Exception:
+        return RedirectResponse(url="/notes")
     return template.TemplateResponse(
         request=request,
         name="update_note.html",
@@ -52,15 +53,19 @@ def show_edit_note_form(request: Request, note_id: str):
 @app.post("/notes/{note_id}/edit")
 def update_note(note_id: str, parameter: str = Form(), new_input: str = Form()):
     note_manager = dependencies.get_note_manager()
-    note = note_manager.find_note_by_id(note_id)
+    try:
+        note = note_manager.find_note_by_id(note_id)
+    except Exception:
+        return RedirectResponse(url="/notes")
     note_manager.update_note(note, parameter, new_input)
     return RedirectResponse(url="/notes", status_code=303)
 
 @app.get("/notes/{note_id}/delete", response_class=HTMLResponse)
 def show_delete_note_confirm(request: Request, note_id: str):
     note_manager = dependencies.get_note_manager()
-    note = note_manager.find_note_by_id(note_id)
-    if not note:
+    try:
+        note = note_manager.find_note_by_id(note_id)
+    except Exception:
         return RedirectResponse(url="/notes", status_code=303)
     return template.TemplateResponse(
         request=request,
@@ -71,7 +76,10 @@ def show_delete_note_confirm(request: Request, note_id: str):
 @app.post("/notes/{note_id}/delete")
 def delete_note(note_id: str):
     note_manager = dependencies.get_note_manager()
-    note = note_manager.find_note_by_id(note_id)
+    try:
+        note = note_manager.find_note_by_id(note_id)
+    except Exception:
+        return RedirectResponse(url="/notes", status_code=303)
     if note:
         note_manager.delete_note(note)
     return RedirectResponse(url="/notes", status_code=303)
@@ -79,8 +87,9 @@ def delete_note(note_id: str):
 @app.get("/notes/{note_id}", response_class=HTMLResponse)
 def show_note(request: Request, note_id: str):
     note_manager = dependencies.get_note_manager()
-    note = note_manager.find_note_by_id(note_id)
-    if not note:
+    try:
+        note = note_manager.find_note_by_id(note_id)
+    except Exception:
         return RedirectResponse(url="/notes", status_code=303)
     return template.TemplateResponse(
         request=request,
