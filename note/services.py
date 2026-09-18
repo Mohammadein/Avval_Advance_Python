@@ -19,7 +19,7 @@ class NoteManager:
         self.notes = notes
 
     def init(self) -> None:
-        
+        logger.debug("Loading notes into NoteManager")
         self.load_notes()
         logger.info("NoteManager initialized with %d notes", len(self.notes))
 
@@ -39,12 +39,14 @@ class NoteManager:
     
     def create_note(self, title: str, content: str) -> Note:
         note = self.add_note(self.generate_id(), title, content, self.now(), self.now())
+        logger.debug("Persisting newly created note with ID: %s", note.id)
         storage.save_all_notes(self.get_notes_list())
         logger.info("Note created with ID: %s", note.id)
         return note
     
     def list_notes(self) -> list[Note]:
         notes_list = self.get_notes_list()
+        logger.debug("Returning %d notes to the caller", len(notes_list))
         logger.info("Listing all notes: %d", len(notes_list))
         return notes_list
 
@@ -65,6 +67,7 @@ class NoteManager:
         if not new_input.strip():
             raise errors.InvalidInput(f"{parameter} cannot be empty")
 
+        logger.debug("Updating %s for note with ID: %s", parameter, note.id)
         setattr(note, parameter, new_input.strip())
         note.last_modified_date = self.now()
         storage.save_all_notes(self.get_notes_list())

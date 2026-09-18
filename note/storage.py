@@ -13,6 +13,7 @@ def load_notes() -> list[Note]:
     notes: list[Note] = []
     notes_list: list[dict] = []
     try:
+        logger.debug("Opening notes.json for loading")
         with open("notes.json", "r") as f:
             notes_list = json.load(f)
         if not isinstance(notes_list, list):
@@ -43,6 +44,7 @@ def load_notes() -> list[Note]:
 @errors.handle_file_errors  
 def save_all_notes(notes: list[Note]):
     notes_dicts: list[dict] = []
+    logger.debug("Serializing %d notes for storage", len(notes))
     for note in notes:
         notes_dicts.append(note.to_dict())
 
