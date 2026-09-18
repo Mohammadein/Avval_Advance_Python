@@ -12,6 +12,7 @@ required_note_fields= set(inspect.signature(Note).parameters)
 def load_notes() -> list[Note]:
     notes: list[Note] = []
     notes_list: list[dict] = []
+    note_ids: set[str] = set()
     try:
         logger.debug("Opening notes.json for loading")
         with open("notes.json", "r") as f:
@@ -30,7 +31,22 @@ def load_notes() -> list[Note]:
             extra_fields = n.keys() - required_note_fields
             if extra_fields:
                 raise errors.InvalidNote(f"Unexpected note fields: {extra_fields}")
-            
+
+            invalid_fields = sorted(
+                field for field in required_note_fields if not isinstance(n[field], str)
+            )
+            if invalid_fields:
+                raise errors.InvalidNote(
+                    f"Invalid field types: {', '.join(invalid_fields)}"
+                )
+
+            note_id = n["id"]
+            if not note_id.strip():
+                raise errors.InvalidNote("Note id cannot be empty")
+            if note_id in note_ids:
+                raise errors.InvalidNote(f"Duplicate note id: {note_id}")
+            note_ids.add(note_id)
+
             notes.append(Note.from_dict(n))
 
         logger.info("Loaded %d notes", len(notes))

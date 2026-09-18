@@ -45,3 +45,46 @@ def test_extra_field(tmp_path, monkeypatch):
     manager = NoteManager({})
     with pytest.raises(errors.InvalidNote, match="Unexpected note fields"):
         manager.init()
+
+
+def test_invalid_field_type(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    notes_file = tmp_path / "notes.json"
+    notes_file.write_text(
+        json.dumps(
+            [
+                {
+                    "id": 123,
+                    "title": "Test Note",
+                    "content": "This is a test note.",
+                    "creation_date": "2023-01-01",
+                    "last_modified_date": "2023-01-01",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    manager = NoteManager({})
+
+    with pytest.raises(errors.InvalidNote, match="Invalid field types: id"):
+        manager.init()
+
+
+def test_duplicate_note_id(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    notes_file = tmp_path / "notes.json"
+    note = {
+        "id": "duplicate-id",
+        "title": "First note",
+        "content": "First content",
+        "creation_date": "2023-01-01",
+        "last_modified_date": "2023-01-01",
+    }
+    notes_file.write_text(
+        json.dumps([note, {**note, "title": "Second note"}]),
+        encoding="utf-8",
+    )
+    manager = NoteManager({})
+
+    with pytest.raises(errors.InvalidNote, match="Duplicate note id: duplicate-id"):
+        manager.init()
