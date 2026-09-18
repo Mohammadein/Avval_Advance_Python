@@ -1,7 +1,8 @@
-import note.errors
 import pytest
 
+import note.errors
 from note.services import NoteManager
+
 
 def test_create_note(test_note_manager):
     test_note_manager.create_note("Test Note", "This is a test note.")

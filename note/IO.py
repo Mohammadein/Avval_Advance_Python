@@ -1,5 +1,6 @@
 from . import console
 
+
 def read_input(message: str | None = "Enter your input") -> str:
     return console.read_input(message)
 

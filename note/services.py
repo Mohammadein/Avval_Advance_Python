@@ -1,9 +1,9 @@
-import uuid
-from .models import Note
-from . import errors
-from datetime import date
-from . import storage
 import logging
+import uuid
+from datetime import date
+
+from . import errors, storage
+from .models import Note
 
 create_note_command = "create note"
 list_notes_command = "list notes"

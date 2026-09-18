@@ -1,6 +1,6 @@
 import typer
-from .models import Note
-    
+
+
 # user_input 
 def init_message() -> None:
     print("Hello")

@@ -1,5 +1,6 @@
 from note.services import NoteManager
 
+
 def test_new_manager_has_no_notes():
     manager = NoteManager({})
     notes = manager.list_notes()

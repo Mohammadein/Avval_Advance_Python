@@ -1,8 +1,9 @@
-from .models import Note
-from . import errors
+import inspect
 import json
 import logging
-import inspect
+
+from . import errors
+from .models import Note
 
 logger = logging.getLogger(__name__)
 required_note_fields= set(inspect.signature(Note).parameters)

@@ -4,7 +4,7 @@ import json
 import pytest
 
 from note.services import NoteManager
-from note import errors
+
 
 def test_invalid_file(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
