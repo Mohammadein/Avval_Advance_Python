@@ -82,7 +82,7 @@ class NoteManager:
 
         try:
             return word_list[index]
-        except:
+        except ValueError:
             raise ValueError ("invalid id")
 
     def find_note_by_id(self, id: str) -> Note:

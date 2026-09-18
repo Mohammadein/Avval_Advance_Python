@@ -16,11 +16,11 @@ def load_notes() -> list[Note]:
         with open("notes.json", "r") as f:
             notes_list = json.load(f)
         if not isinstance(notes_list, list):
-            raise ValueError("notes.json must contain a list")
+            raise errors.InvalidNote("notes.json must contain a list")
 
         for n in notes_list:
             if not isinstance(n, dict):
-                raise ValueError("a note must be an object")
+                raise errors.InvalidNote("a note must be an object")
 
             missing_fields = required_note_fields - n.keys()
             if missing_fields:
