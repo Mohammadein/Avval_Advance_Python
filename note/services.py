@@ -29,14 +29,7 @@ class NoteManager:
         for note in notes_list:
             self.notes[note.id] = note
 
-    # main functconsolens
-    def add_note(self, id: str, title: str, content: str,
-                    creatconsolen_date: str, last_modified_date: str) -> Note:
-
-        note = Note(id, title, content, creatconsolen_date, last_modified_date)
-        self.notes[id] = note
-        return note
-    
+    # main functconsolens   
     def create_note(self, title: str, content: str) -> Note:
         if not title.strip():
             raise errors.InvalidInput("title cannot be empty")
