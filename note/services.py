@@ -85,14 +85,6 @@ class NoteManager:
     def generate_id(self) -> str:
         return str(uuid.uuid4())
 
-    def extract_note_id(self, user_input: str , index: int) -> str:
-        word_list = user_input.split()
-
-        try:
-            return word_list[index]
-        except ValueError:
-            raise ValueError ("invalid id")
-
     def find_note_by_id(self, id: str) -> Note:
         note = self.notes.get(id)
         if note is None:
