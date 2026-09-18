@@ -24,7 +24,7 @@ def create():
     content = cli_io.read_multiline_input("content (end with END NOTE):")
     note = note_manager.create_note(title, content)
 
-    cli_io.show_message("یادداشت ساخته شد با شناسه: " + note.id)
+    cli_io.show_message("note created with ID " + note.id)
 
 @app.command()
 @errors.handle_note_errors
