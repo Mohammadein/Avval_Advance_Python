@@ -38,7 +38,7 @@ class NoteManager:
         return note
     
     def create_note(self, title: str, content: str) -> Note:
-        note = self.add_note(self.generate_id(), title, content, self.today(), self.today())
+        note = self.add_note(self.generate_id(), title, content, self.now(), self.now())
         storage.save_all_notes(self.get_notes_list())
         logger.info("Note created with ID: %s", note.id)
         return note
@@ -66,7 +66,7 @@ class NoteManager:
             raise errors.InvalidInput(f"{parameter} cannot be empty")
 
         setattr(note, parameter, new_input.strip())
-        note.last_modified_date = self.today()
+        note.last_modified_date = self.now()
         storage.save_all_notes(self.get_notes_list())
 
         logger.info("Note with ID %s updated: %s", note.id, parameter,)
@@ -79,8 +79,8 @@ class NoteManager:
 
         
     # helper functconsolens
-    def today(self) -> str:
-        return datetime.datetime.now(tz=ZoneInfo("Asia/Tehran")).date().isoformat()
+    def now(self) -> str:
+        return datetime.datetime.now(tz=ZoneInfo("Asia/Tehran")).isoformat()
 
     def generate_id(self) -> str:
         return str(uuid.uuid4())

@@ -1,3 +1,6 @@
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
 import pytest
 
 import note.errors
@@ -20,16 +23,27 @@ def test_delete_note(test_note_manager):
     assert len(notes_after_deletion) == 0
 
 def test_update_note(test_note_manager, monkeypatch):
-    monkeypatch.setattr(test_note_manager, "today", lambda: "2026-09-1")
+    monkeypatch.setattr(test_note_manager, "now", lambda: "2026-09-1")
     test_note_manager.create_note("Test Note", "This is a test note.")
     notes = test_note_manager.list_notes()
-    monkeypatch.setattr(test_note_manager, "today", lambda: "2026-09-15")
+    monkeypatch.setattr(test_note_manager, "now", lambda: "2026-09-15")
     test_note_manager.update_note(notes[0], "content", "This is an updated note.")
     updated_notes = test_note_manager.list_notes()
     assert updated_notes[0].title == "Test Note"
     assert updated_notes[0].content == "This is an updated note."
     assert updated_notes[0].last_modified_date == "2026-09-15"
     assert updated_notes[0].creation_date == "2026-09-1"
+
+
+def test_now_returns_tehran_timezone_aware_iso_timestamp(test_note_manager):
+    timestamp = test_note_manager.now()
+    parsed_timestamp = datetime.fromisoformat(timestamp)
+
+    assert "T" in timestamp
+    assert parsed_timestamp.tzinfo is not None
+    assert parsed_timestamp.utcoffset() == datetime.now(
+        tz=ZoneInfo("Asia/Tehran")
+    ).utcoffset()
 
 def test_cannot_update_note_id(test_note_manager):
     note = test_note_manager.create_note("Title", "Content")
