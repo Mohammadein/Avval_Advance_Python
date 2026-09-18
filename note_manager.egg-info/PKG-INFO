@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: note-manager
+Version: 0.1.0
+Summary: A personal note manager with CLI and web interfaces.
+Requires-Python: >=3.10
+Requires-Dist: fastapi>=0.110
+Requires-Dist: jinja2>=3.1
+Requires-Dist: python-multipart>=0.0.9
+Requires-Dist: typer>=0.12
+Requires-Dist: tzdata; sys_platform == "win32"
+Requires-Dist: uvicorn[standard]>=0.29
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: pytest-cov>=5; extra == "dev"
+Requires-Dist: ruff>=0.4; extra == "dev"
