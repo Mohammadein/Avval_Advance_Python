@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -5,7 +7,8 @@ from fastapi.templating import Jinja2Templates
 from note import dependencies, errors
 
 app = FastAPI()
-template = Jinja2Templates(directory="note/templates")
+TEMPLATES_DIR = Path(__file__).resolve().parent / "templates"
+template = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
 @app.get("/")
 def home():
