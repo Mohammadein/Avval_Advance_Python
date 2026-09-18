@@ -23,7 +23,7 @@
 - [x] `pyproject.toml` بسازید شامل:
   - [x] `[tool.coverage.run]` با `omit` برای `note/__main__.py` و `note/web_app.py`
   - [ ] بخش `tool.ruff.lint` — **تغییر ندهید**، فقط مطمئن شوید کد بدون خطای lint اجرا می‌شود.
-  - [ ] dependency ها (`typer`, `fastapi`, `uvicorn`, `jinja2`, `pytest`, `pytest-cov`).
+  - [x] dependency ها (`typer`, `fastapi`, `uvicorn`, `jinja2`, `pytest`, `pytest-cov`).
 
 # ======= تا اینجا باید کار بشه
 ## ⌨️ CLI با Typer
@@ -34,26 +34,26 @@
   - [x] `note show <id>` — نمایش همهٔ جزئیات؛ پیام خطای مناسب برای ID نامعتبر.
   - [x] `note update <id>` — نمایش جزئیات فعلی، پرسش این‌که کدام فیلد ویرایش شود، دریافت مقدار جدید، به‌روزرسانی `last_modified_date`.
   - [x] `note delete <id>` — پیام تأیید قبل از حذف (`[y/N]`).
-  - [ ] `note web [--port PORT]` — اجرای Web UI (uvicorn) با پورت اختیاری.
+  - [x] `note web [--port PORT]` — اجرای Web UI (uvicorn) با پورت اختیاری.
   - [ ] بررسی خروجی `python -m note --help` مطابق نمونهٔ سند.
 
 ## 🌐 Web UI با FastAPI + Jinja2
 
-- [ ] ساخت اپ FastAPI در `web_app.py`.
-- [ ] Route ها:
-  - [ ] `GET /` → redirect خودکار به `/notes`
-  - [ ] `GET /notes` → صفحهٔ لیست یادداشت‌ها
-  - [ ] `POST /notes` → ایجاد یادداشت جدید از فرم وب
-  - [ ] `GET /notes/{note_id}` → صفحهٔ نمایش جزئیات یک یادداشت
-  - [ ] صفحه/route فرم ویرایش (`GET`/`POST` برای update)
-  - [ ] route حذف (`POST` یا `DELETE`)
-- [ ] Template ها با Jinja2:
-  - [ ] یک template پایه (base layout) با `{% block %}` برای وراثت بین صفحات
-  - [ ] صفحهٔ لیست (حلقهٔ Jinja2 روی یادداشت‌ها)
-  - [ ] فرم ایجاد یادداشت جدید
-  - [ ] صفحهٔ جزئیات یک یادداشت
-  - [ ] فرم ویرایش یادداشت
-- [ ] UI ساده کافی است (تمرکز روی کارکرد Jinja2/FastAPI، نه طراحی پیچیده).
+- [x] ساخت اپ FastAPI در `web_app.py`.
+- [x] Route ها:
+  - [x] `GET /` → redirect خودکار به `/notes`
+  - [x] `GET /notes` → صفحهٔ لیست یادداشت‌ها
+  - [x] `POST /notes` → ایجاد یادداشت جدید از فرم وب
+  - [x] `GET /notes/{note_id}` → صفحهٔ نمایش جزئیات یک یادداشت
+  - [x] صفحه/route فرم ویرایش (`GET`/`POST` برای update)
+  - [x] route حذف (`POST` یا `DELETE`)
+- [x] Template ها با Jinja2:
+  - [x] یک template پایه (base layout) با `{% block %}` برای وراثت بین صفحات
+  - [x] صفحهٔ لیست (حلقهٔ Jinja2 روی یادداشت‌ها)
+  - [x] فرم ایجاد یادداشت جدید
+  - [x] صفحهٔ جزئیات یک یادداشت
+  - [x] فرم ویرایش یادداشت
+- [x] UI ساده کافی است (تمرکز روی کارکرد Jinja2/FastAPI، نه طراحی پیچیده).
 
 ## 🧱 شیءگرایی (OOP)
 

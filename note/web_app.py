@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from note import dependencies
-
+from note.errors import NoteNotFoundError
 
 app = FastAPI()
 template = Jinja2Templates(directory="note/templates")
@@ -42,7 +42,7 @@ def show_edit_note_form(request: Request, note_id: str):
     note_manager = dependencies.get_note_manager()
     try:
         note = note_manager.find_note_by_id(note_id)
-    except Exception:
+    except NoteNotFoundError:
         return RedirectResponse(url="/notes")
     return template.TemplateResponse(
         request=request,
@@ -55,7 +55,7 @@ def update_note(note_id: str, parameter: str = Form(), new_input: str = Form()):
     note_manager = dependencies.get_note_manager()
     try:
         note = note_manager.find_note_by_id(note_id)
-    except Exception:
+    except NoteNotFoundError:
         return RedirectResponse(url="/notes")
     note_manager.update_note(note, parameter, new_input)
     return RedirectResponse(url="/notes", status_code=303)
@@ -65,7 +65,7 @@ def show_delete_note_confirm(request: Request, note_id: str):
     note_manager = dependencies.get_note_manager()
     try:
         note = note_manager.find_note_by_id(note_id)
-    except Exception:
+    except NoteNotFoundError:
         return RedirectResponse(url="/notes", status_code=303)
     return template.TemplateResponse(
         request=request,
@@ -78,7 +78,7 @@ def delete_note(note_id: str):
     note_manager = dependencies.get_note_manager()
     try:
         note = note_manager.find_note_by_id(note_id)
-    except Exception:
+    except NoteNotFoundError:
         return RedirectResponse(url="/notes", status_code=303)
     if note:
         note_manager.delete_note(note)
@@ -89,7 +89,7 @@ def show_note(request: Request, note_id: str):
     note_manager = dependencies.get_note_manager()
     try:
         note = note_manager.find_note_by_id(note_id)
-    except Exception:
+    except NoteNotFoundError:
         return RedirectResponse(url="/notes", status_code=303)
     return template.TemplateResponse(
         request=request,
