@@ -28,9 +28,11 @@ def handle_note_errors(func):
         except NoteNotFoundError:
             logger.error("Note not found")
             cli_io.error("Note not found")
+            raise typer.Exit(code=1)
         except InvalidInput:
             logger.error("Invalid input")
             cli_io.error("Invalid input")
+            raise typer.Exit(code=1)
         except (
             PermissionError,
             FileNotFoundError,

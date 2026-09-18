@@ -108,3 +108,14 @@ def invalid_storage_handler(
         content="note file is broken",
         status_code=500,
     )
+
+
+@app.exception_handler(errors.InvalidInput)
+def invalid_input_handler(
+    request: Request,
+    exc: errors.InvalidInput,
+) -> HTMLResponse:
+    return HTMLResponse(
+        content="Invalid input",
+        status_code=400,
+    )

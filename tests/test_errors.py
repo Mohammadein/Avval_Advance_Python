@@ -9,8 +9,10 @@ def test_note_not_found_error(capsys):
     def find_note():
         raise errors.NoteNotFoundError
 
-    find_note()
+    with pytest.raises(typer.Exit) as exc_info:
+        find_note()
 
+    assert exc_info.value.exit_code == 1
     assert capsys.readouterr().out == "error: Note not found\n"
 
 
@@ -19,8 +21,10 @@ def test_invalid_input_error(capsys):
     def update_note():
         raise errors.InvalidInput
 
-    update_note()
+    with pytest.raises(typer.Exit) as exc_info:
+        update_note()
 
+    assert exc_info.value.exit_code == 1
     assert capsys.readouterr().out == "error: Invalid input\n"
 
 
