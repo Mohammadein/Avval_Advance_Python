@@ -43,7 +43,8 @@ def update(note_id: str):
     note_manager = dependencies.get_note_manager()
 
     note = note_manager.find_note_by_id(note_id)
-
+    cli_io.show_message(note_manager.show_note(note))
+    
     parameter = cli_io.read_input("Enter parameter to update (title or content):")
     if parameter != "title" and parameter != "content":
         raise errors.InvalidInput
